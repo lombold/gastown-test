@@ -1,0 +1,25 @@
+<div class="card" (click)="onCardClick()">
+  @if (imageUrl()) {
+    <div class="card-image">
+      <img [src]="imageUrl()" [alt]="title()" />
+    </div>
+  }
+
+  <div class="card-content">
+    @if (title()) {
+      <h3 class="card-title">{{ title() }}</h3>
+    }
+
+    @if (description()) {
+      <p class="card-description">{{ description() }}</p>
+    }
+
+    @if (showActions()) {
+      <div class="card-actions">
+        <button class="card-action-btn" (click)="onActionClick($event)">
+          View Details
+        </button>
+      </div>
+    }
+  </div>
+</div>

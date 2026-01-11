@@ -1,0 +1,142 @@
+.header {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .menu-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        display: none;
+
+        @media (max-width: 768px) {
+          display: block;
+        }
+
+        .menu-icon {
+          display: block;
+          width: 24px;
+          height: 2px;
+          background-color: #1f2937;
+          position: relative;
+
+          &::before,
+          &::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background-color: #1f2937;
+            left: 0;
+          }
+
+          &::before {
+            top: -8px;
+          }
+
+          &::after {
+            top: 8px;
+          }
+        }
+      }
+
+      .header-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        text-decoration: none;
+
+        &:hover {
+          color: #3b82f6;
+        }
+      }
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex: 1;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+
+      .nav-link {
+        color: #6b7280;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #1f2937;
+        }
+
+        &.active {
+          color: #3b82f6;
+        }
+      }
+    }
+
+    .header-right {
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .user-name {
+          color: #1f2937;
+          font-weight: 500;
+        }
+
+        .btn-logout {
+          padding: 0.5rem 1rem;
+          background-color: #ef4444;
+          color: white;
+          border: none;
+          border-radius: 0.25rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: #dc2626;
+          }
+        }
+      }
+
+      .btn-login {
+        padding: 0.5rem 1rem;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #2563eb;
+        }
+      }
+    }
+  }
+}
