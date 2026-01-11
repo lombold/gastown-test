@@ -1,0 +1,63 @@
+.home-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0 0 1rem 0;
+      }
+
+      .subtitle {
+        font-size: 1.25rem;
+        color: #6b7280;
+        margin: 0;
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .loading-state,
+    .error-state,
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+      p {
+        font-size: 1.125rem;
+        color: #6b7280;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .error-state {
+      p {
+        color: #ef4444;
+      }
+    }
+  }
+}

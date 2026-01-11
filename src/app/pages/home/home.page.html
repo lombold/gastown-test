@@ -1,0 +1,59 @@
+<app-header
+  [title]="'Gastowntest'"
+  [userName]="userName()"
+  [isAuthenticated]="isAuthenticated()"
+  (loginClicked)="onLoginClick()"
+  (logoutClicked)="onLogoutClick()"
+></app-header>
+
+<main class="home-page">
+  <div class="container">
+    <div class="hero">
+      <h1>Welcome to Gastowntest</h1>
+      <p class="subtitle">
+        An Angular v21 SSR application demonstrating the Smart/Presentational component pattern
+      </p>
+    </div>
+
+    <div class="actions">
+      <app-button
+        [label]="'Refresh Items'"
+        [variant]="'primary'"
+        [loading]="loading()"
+        (clicked)="onRefreshClick()"
+      ></app-button>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <p>Loading items...</p>
+      </div>
+    } @else if (error()) {
+      <div class="error-state">
+        <p>{{ error() }}</p>
+        <app-button
+          [label]="'Try Again'"
+          [variant]="'danger'"
+          (clicked)="onRefreshClick()"
+        ></app-button>
+      </div>
+    } @else {
+      <div class="items-grid">
+        @for (item of items(); track item.id) {
+          <app-card
+            [title]="item.title"
+            [description]="item.body"
+            (cardClicked)="onCardClick(item)"
+            (actionClicked)="onActionClick(item)"
+          ></app-card>
+        }
+      </div>
+    }
+
+    @if (items().length === 0 && !loading() && !error()) {
+      <div class="empty-state">
+        <p>No items found.</p>
+      </div>
+    }
+  </div>
+</main>

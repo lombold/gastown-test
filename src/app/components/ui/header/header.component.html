@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="header-container">
+    <div class="header-left">
+      @if (showMenu()) {
+        <button class="menu-button" (click)="onMenuToggle()" aria-label="Toggle menu">
+          <span class="menu-icon"></span>
+        </button>
+      }
+      <a routerLink="/" class="header-title">{{ title() }}</a>
+    </div>
+
+    <nav class="header-nav">
+      <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
+      <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
+    </nav>
+
+    <div class="header-right">
+      @if (isAuthenticated()) {
+        <div class="user-info">
+          <span class="user-name">{{ userName() }}</span>
+          <button class="btn-logout" (click)="onLogoutClick()">Logout</button>
+        </div>
+      } @else {
+        <button class="btn-login" (click)="onLoginClick()">Login</button>
+      }
+    </div>
+  </div>
+</header>
