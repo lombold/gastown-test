@@ -1,59 +1,146 @@
-<app-header
-  [title]="'Gastowntest'"
-  [userName]="userName()"
-  [isAuthenticated]="isAuthenticated()"
-  (loginClicked)="onLoginClick()"
-  (logoutClicked)="onLogoutClick()"
-></app-header>
-
-<main class="home-page">
-  <div class="container">
-    <div class="hero">
-      <h1>Welcome to Gastowntest</h1>
+<main class="workout-page">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Workout Template Console</p>
+      <h1>Configure training blocks and preview the plan in real time.</h1>
       <p class="subtitle">
-        An Angular v21 SSR application demonstrating the Smart/Presentational component pattern
+        Build repeatable templates by defining each exercise, its sets, reps, and target load.
       </p>
     </div>
+    <button class="primary-button" type="button" (click)="addTemplate()">New template</button>
+  </section>
 
-    <div class="actions">
-      <app-button
-        [label]="'Refresh Items'"
-        [variant]="'primary'"
-        [loading]="loading()"
-        (clicked)="onRefreshClick()"
-      ></app-button>
-    </div>
+  <section class="layout">
+    <div class="panel config-panel">
+      <header>
+        <div>
+          <h2>Configuration</h2>
+          <p class="muted">Select a template, then tune every exercise detail.</p>
+        </div>
+      </header>
 
-    @if (loading()) {
-      <div class="loading-state">
-        <p>Loading items...</p>
-      </div>
-    } @else if (error()) {
-      <div class="error-state">
-        <p>{{ error() }}</p>
-        <app-button
-          [label]="'Try Again'"
-          [variant]="'danger'"
-          (clicked)="onRefreshClick()"
-        ></app-button>
-      </div>
-    } @else {
-      <div class="items-grid">
-        @for (item of items(); track item.id) {
-          <app-card
-            [title]="item.title"
-            [description]="item.body"
-            (cardClicked)="onCardClick(item)"
-            (actionClicked)="onActionClick(item)"
-          ></app-card>
+      <div class="template-tabs">
+        @for (template of templates(); track template.id) {
+          <button
+            type="button"
+            class="template-tab"
+            [class.active]="template.id === selectedTemplateId()"
+            (click)="setActiveTemplate(template.id)"
+          >
+            <span>{{ template.name }}</span>
+            <span class="count">{{ template.exercises.length }} exercises</span>
+          </button>
         }
       </div>
-    }
 
-    @if (items().length === 0 && !loading() && !error()) {
-      <div class="empty-state">
-        <p>No items found.</p>
-      </div>
-    }
-  </div>
+      @if (selectedTemplate(); as template) {
+        <div class="editor">
+          <label class="field">
+            <span>Template name</span>
+            <input
+              type="text"
+              [value]="template.name"
+              (input)="updateTemplateName($any($event.target).value)"
+            />
+          </label>
+
+          <div class="editor-header">
+            <h3>Exercises</h3>
+            <button type="button" class="ghost-button" (click)="addExercise()">Add exercise</button>
+          </div>
+
+          <div class="exercise-grid">
+            @for (exercise of template.exercises; track exercise.id) {
+              <div class="exercise-card">
+                <div class="exercise-header">
+                  <span>Exercise</span>
+                  <button
+                    type="button"
+                    class="icon-button"
+                    aria-label="Remove exercise"
+                    (click)="removeExercise(exercise.id)"
+                  >
+                    Remove
+                  </button>
+                </div>
+
+                <label class="field">
+                  <span>Name</span>
+                  <input
+                    type="text"
+                    [value]="exercise.name"
+                    (input)="updateExercise(exercise.id, 'name', $any($event.target).value)"
+                  />
+                </label>
+
+                <div class="field-row">
+                  <label class="field">
+                    <span>Sets</span>
+                    <input
+                      type="number"
+                      min="1"
+                      [value]="exercise.sets"
+                      (input)="updateExercise(exercise.id, 'sets', $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="field">
+                    <span>Reps</span>
+                    <input
+                      type="number"
+                      min="1"
+                      [value]="exercise.reps"
+                      (input)="updateExercise(exercise.id, 'reps', $any($event.target).value)"
+                    />
+                  </label>
+                  <label class="field">
+                    <span>Weight</span>
+                    <input
+                      type="number"
+                      min="0"
+                      [value]="exercise.weight"
+                      (input)="updateExercise(exercise.id, 'weight', $any($event.target).value)"
+                    />
+                  </label>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <aside class="panel live-panel">
+      <header>
+        <div>
+          <h2>Live View</h2>
+          <p class="muted">The selected template rendered for athletes.</p>
+        </div>
+      </header>
+
+      @if (selectedTemplate(); as template) {
+        <div class="live-card">
+          <h3>{{ template.name }}</h3>
+          <p class="muted">{{ template.exercises.length }} exercises</p>
+          <div class="live-exercises">
+            @for (exercise of template.exercises; track exercise.id) {
+              <div class="live-exercise">
+                <div>
+                  <h4>{{ exercise.name }}</h4>
+                  <p class="muted">Sets {{ exercise.sets }} • Reps {{ exercise.reps }}</p>
+                </div>
+                <div class="load">
+                  <span>{{ exercise.weight }}</span>
+                  <span class="unit">lb</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <p>Select a template to see the live view.</p>
+        </div>
+      }
+    </aside>
+  </section>
 </main>
