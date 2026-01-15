@@ -1,0 +1,113 @@
+<main class="config-page">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Configuration</p>
+      <h1>Design workout templates for every session format.</h1>
+      <p class="subtitle">
+        Name the template, define exercises, and set the exact training volume.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="ghost-button" routerLink="/">View live</a>
+      <button class="primary-button" type="button" (click)="addTemplate()">New template</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <header class="panel-header">
+      <div>
+        <h2>Template Library</h2>
+        <p class="muted">Select a template, then tune every exercise detail.</p>
+      </div>
+    </header>
+
+    <div class="template-tabs">
+      @for (template of templates(); track template.id) {
+        <button
+          type="button"
+          class="template-tab"
+          [class.active]="template.id === selectedTemplateId()"
+          (click)="setActiveTemplate(template.id)"
+        >
+          <span>{{ template.name }}</span>
+          <span class="count">{{ template.exercises.length }} exercises</span>
+        </button>
+      }
+    </div>
+
+    @if (selectedTemplate(); as template) {
+      <div class="editor">
+        <label class="field">
+          <span>Template name</span>
+          <input
+            type="text"
+            [value]="template.name"
+            (input)="updateTemplateName($any($event.target).value)"
+          />
+        </label>
+
+        <div class="editor-header">
+          <h3>Exercises</h3>
+          <button type="button" class="ghost-button" (click)="addExercise()">Add exercise</button>
+        </div>
+
+        <div class="exercise-grid">
+          @for (exercise of template.exercises; track exercise.id) {
+            <div class="exercise-card">
+              <div class="exercise-header">
+                <span>Exercise</span>
+                <button
+                  type="button"
+                  class="icon-button"
+                  aria-label="Remove exercise"
+                  (click)="removeExercise(exercise.id)"
+                >
+                  Remove
+                </button>
+              </div>
+
+              <label class="field">
+                <span>Name</span>
+                <input
+                  type="text"
+                  [value]="exercise.name"
+                  (input)="updateExercise(exercise.id, 'name', $any($event.target).value)"
+                />
+              </label>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Sets</span>
+                  <input
+                    type="number"
+                    min="1"
+                    [value]="exercise.sets"
+                    (input)="updateExercise(exercise.id, 'sets', $any($event.target).value)"
+                  />
+                </label>
+                <label class="field">
+                  <span>Reps</span>
+                  <input
+                    type="number"
+                    min="1"
+                    [value]="exercise.reps"
+                    (input)="updateExercise(exercise.id, 'reps', $any($event.target).value)"
+                  />
+                </label>
+                <label class="field">
+                  <span>Weight</span>
+                  <input
+                    type="number"
+                    min="0"
+                    [value]="exercise.weight"
+                    (input)="updateExercise(exercise.id, 'weight', $any($event.target).value)"
+                  />
+                </label>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </section>
+</main>

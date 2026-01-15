@@ -1,146 +1,43 @@
-<main class="workout-page">
+<main class="live-page">
   <section class="hero">
     <div>
-      <p class="eyebrow">Workout Template Console</p>
-      <h1>Configure training blocks and preview the plan in real time.</h1>
+      <p class="eyebrow">Live View</p>
+      <h1>Run the session with a clear, athlete-first preview.</h1>
       <p class="subtitle">
-        Build repeatable templates by defining each exercise, its sets, reps, and target load.
+        This page is the front-of-house display. Adjust templates on the configuration page.
       </p>
     </div>
-    <button class="primary-button" type="button" (click)="addTemplate()">New template</button>
+    <a class="primary-button" routerLink="/configuration">Edit templates</a>
   </section>
 
-  <section class="layout">
-    <div class="panel config-panel">
+  @if (selectedTemplate(); as template) {
+    <section class="live-card">
       <header>
         <div>
-          <h2>Configuration</h2>
-          <p class="muted">Select a template, then tune every exercise detail.</p>
+          <h2>{{ template.name }}</h2>
+          <p class="muted">{{ template.exercises.length }} exercises</p>
         </div>
+        <span class="badge">Active</span>
       </header>
-
-      <div class="template-tabs">
-        @for (template of templates(); track template.id) {
-          <button
-            type="button"
-            class="template-tab"
-            [class.active]="template.id === selectedTemplateId()"
-            (click)="setActiveTemplate(template.id)"
-          >
-            <span>{{ template.name }}</span>
-            <span class="count">{{ template.exercises.length }} exercises</span>
-          </button>
+      <div class="live-exercises">
+        @for (exercise of template.exercises; track exercise.id) {
+          <div class="live-exercise">
+            <div>
+              <h3>{{ exercise.name }}</h3>
+              <p class="muted">Sets {{ exercise.sets }} • Reps {{ exercise.reps }}</p>
+            </div>
+            <div class="load">
+              <span>{{ exercise.weight }}</span>
+              <span class="unit">lb</span>
+            </div>
+          </div>
         }
       </div>
-
-      @if (selectedTemplate(); as template) {
-        <div class="editor">
-          <label class="field">
-            <span>Template name</span>
-            <input
-              type="text"
-              [value]="template.name"
-              (input)="updateTemplateName($any($event.target).value)"
-            />
-          </label>
-
-          <div class="editor-header">
-            <h3>Exercises</h3>
-            <button type="button" class="ghost-button" (click)="addExercise()">Add exercise</button>
-          </div>
-
-          <div class="exercise-grid">
-            @for (exercise of template.exercises; track exercise.id) {
-              <div class="exercise-card">
-                <div class="exercise-header">
-                  <span>Exercise</span>
-                  <button
-                    type="button"
-                    class="icon-button"
-                    aria-label="Remove exercise"
-                    (click)="removeExercise(exercise.id)"
-                  >
-                    Remove
-                  </button>
-                </div>
-
-                <label class="field">
-                  <span>Name</span>
-                  <input
-                    type="text"
-                    [value]="exercise.name"
-                    (input)="updateExercise(exercise.id, 'name', $any($event.target).value)"
-                  />
-                </label>
-
-                <div class="field-row">
-                  <label class="field">
-                    <span>Sets</span>
-                    <input
-                      type="number"
-                      min="1"
-                      [value]="exercise.sets"
-                      (input)="updateExercise(exercise.id, 'sets', $any($event.target).value)"
-                    />
-                  </label>
-                  <label class="field">
-                    <span>Reps</span>
-                    <input
-                      type="number"
-                      min="1"
-                      [value]="exercise.reps"
-                      (input)="updateExercise(exercise.id, 'reps', $any($event.target).value)"
-                    />
-                  </label>
-                  <label class="field">
-                    <span>Weight</span>
-                    <input
-                      type="number"
-                      min="0"
-                      [value]="exercise.weight"
-                      (input)="updateExercise(exercise.id, 'weight', $any($event.target).value)"
-                    />
-                  </label>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      }
-    </div>
-
-    <aside class="panel live-panel">
-      <header>
-        <div>
-          <h2>Live View</h2>
-          <p class="muted">The selected template rendered for athletes.</p>
-        </div>
-      </header>
-
-      @if (selectedTemplate(); as template) {
-        <div class="live-card">
-          <h3>{{ template.name }}</h3>
-          <p class="muted">{{ template.exercises.length }} exercises</p>
-          <div class="live-exercises">
-            @for (exercise of template.exercises; track exercise.id) {
-              <div class="live-exercise">
-                <div>
-                  <h4>{{ exercise.name }}</h4>
-                  <p class="muted">Sets {{ exercise.sets }} • Reps {{ exercise.reps }}</p>
-                </div>
-                <div class="load">
-                  <span>{{ exercise.weight }}</span>
-                  <span class="unit">lb</span>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      } @else {
-        <div class="empty-state">
-          <p>Select a template to see the live view.</p>
-        </div>
-      }
-    </aside>
-  </section>
+    </section>
+  } @else {
+    <section class="empty-state">
+      <p>Select a template on the configuration page to see the live view.</p>
+      <a class="ghost-button" routerLink="/configuration">Go to configuration</a>
+    </section>
+  }
 </main>
